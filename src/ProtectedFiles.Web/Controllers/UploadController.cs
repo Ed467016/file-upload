@@ -45,6 +45,11 @@ namespace ProtectedFiles.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadProtectedFile([FromForm]UploadFileViewModel uploadFileViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(UploadProtectedFile), new { itemId = uploadFileViewModel.ItemId});
+            }
+
             try
             {
                 var result = await UploadProtectedFileSafe(uploadFileViewModel);

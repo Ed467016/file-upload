@@ -8,6 +8,7 @@ namespace ProtectedFiles.Web.Models
         [Required]
         public int ItemId { get; set; }
 
+        [Required]
         public IFormFile File { get; set; }
     }
 }

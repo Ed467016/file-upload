@@ -7,19 +7,19 @@ namespace ProtectedFiles.Domain
 {
     public class LocalStorageFileManager : IFileManager
     {
-        private LocalStorageFileManagerOptions Options { get; set; }
+        private LocalStorageFileManagerOptions _options;
 
         public LocalStorageFileManager(LocalStorageFileManagerOptions options)
         {
-            Options = options;
+            _options = options;
         }
 
         public async Task UploadFileAsync(string fileName, Stream stream)
         {
             DirectoryEnsureCreated();
-            var filePath = Path.Combine(Options.Directory, fileName);
+            var filePath = Path.Combine(_options.Directory, fileName);
             var fileNameWOExtension = Path.GetFileNameWithoutExtension(fileName);
-            var files = Directory.GetFiles(Options.Directory);
+            var files = Directory.GetFiles(_options.Directory);
             var existingFile = files.SingleOrDefault(
                 f => Path.GetFileNameWithoutExtension(f) == fileNameWOExtension);
 
@@ -36,14 +36,14 @@ namespace ProtectedFiles.Domain
 
         private void DirectoryEnsureCreated()
         {
-            var directoryInfo = new DirectoryInfo(Options.Directory);
+            var directoryInfo = new DirectoryInfo(_options.Directory);
 
             if (directoryInfo.Exists)
             {
                 return;
             }
 
-            directoryInfo = Directory.CreateDirectory(Options.Directory);
+            directoryInfo = Directory.CreateDirectory(_options.Directory);
             directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
         }
     }
